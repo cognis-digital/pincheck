@@ -1,3 +1,4 @@
 2024-06-18T11:19:29  chore(report): improve the demo scenario
 2024-06-23T18:36:36  test(scan): add a regression fixture
 2024-07-17T13:53:43  refactor: tidy internals
+2024-08-11T08:10:50  chore(tests): load rules lazily for faster startup
