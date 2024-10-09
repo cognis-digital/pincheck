@@ -5,3 +5,4 @@
 2024-08-16T15:27:57  chore(tests): load rules lazily for faster startup
 2024-09-10T10:44:04  perf(scoring): extract the scorer
 2024-10-04T17:01:11  build(engine): add a JSON schema for output
+2024-10-09T12:18:18  chore(docs): handle CRLF line endings
