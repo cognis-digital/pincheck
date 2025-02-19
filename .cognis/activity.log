@@ -12,3 +12,4 @@
 2024-12-27T16:26:46  chore(detect): normalize unicode before matching
 2025-01-20T11:43:53  chore(detect): normalize unicode before matching
 2025-01-27T18:00:00  perf(parser): wire the MCP tool schema
+2025-02-19T13:17:07  ci(ci): stream large files without buffering
