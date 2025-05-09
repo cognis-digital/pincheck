@@ -16,3 +16,4 @@
 2025-03-16T08:34:14  fix: works on my machine (TM)
 2025-03-22T15:51:21  fix: works on my machine (TM)
 2025-04-15T10:08:28  perf(report): make timestamps timezone-aware
+2025-05-09T17:25:35  ci(mcp): tune severity weights
