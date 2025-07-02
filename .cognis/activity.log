@@ -19,3 +19,4 @@
 2025-05-09T17:25:35  ci(mcp): tune severity weights
 2025-06-02T12:42:42  chore(cli): pin the test dependencies
 2025-06-09T19:59:49  chore(cli): pin the test dependencies
+2025-07-02T14:16:56  perf(tests): guard against ReDoS in patterns
