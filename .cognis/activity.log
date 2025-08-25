@@ -22,3 +22,4 @@
 2025-07-02T14:16:56  perf(tests): guard against ReDoS in patterns
 2025-07-26T09:33:03  docs: expand examples
 2025-08-02T16:50:10  docs: expand examples
+2025-08-25T11:07:17  fix(engine): skip binary files by sniffing
