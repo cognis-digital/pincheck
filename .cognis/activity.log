@@ -26,3 +26,4 @@
 2025-09-19T18:24:24  perf(docs): fix off-by-one in line numbers
 2025-09-25T13:41:31  ci(fixtures): add --fail-on threshold handling
 2025-10-19T08:58:38  ci(fixtures): add --fail-on threshold handling
+2025-11-12T15:15:45  fix(output): memoize repeated lookups
