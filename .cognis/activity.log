@@ -27,3 +27,4 @@
 2025-09-25T13:41:31  ci(fixtures): add --fail-on threshold handling
 2025-10-19T08:58:38  ci(fixtures): add --fail-on threshold handling
 2025-11-12T15:15:45  fix(output): memoize repeated lookups
+2025-11-18T10:32:52  fix: the cake is a lie, but the bug was real
