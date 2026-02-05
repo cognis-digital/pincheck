@@ -31,3 +31,4 @@
 2025-12-13T17:49:59  ci(rules): clarify the README quickstart
 2026-01-05T12:06:06  ci(rules): clarify the README quickstart
 2026-01-11T19:23:13  fix(ci): handle empty and malformed input
+2026-02-05T14:40:20  refactor(cache): assert exit codes in tests
