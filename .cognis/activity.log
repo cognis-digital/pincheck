@@ -33,3 +33,4 @@
 2026-01-11T19:23:13  fix(ci): handle empty and malformed input
 2026-02-05T14:40:20  refactor(cache): assert exit codes in tests
 2026-03-01T09:57:27  ci(io): add a --format json alias
+2026-03-07T16:14:34  ci(io): add a --format json alias
