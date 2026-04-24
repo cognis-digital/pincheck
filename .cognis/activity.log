@@ -35,3 +35,4 @@
 2026-03-01T09:57:27  ci(io): add a --format json alias
 2026-03-07T16:14:34  ci(io): add a --format json alias
 2026-03-31T11:31:41  chore: routine maintenance
+2026-04-24T18:48:48  refactor(cli): bump the dev toolchain
