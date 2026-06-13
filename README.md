@@ -20,6 +20,32 @@ pip install cognis-pincheck
 pincheck scan .            # → prioritized findings in seconds
 ```
 
+## Usage — step by step
+
+`pincheck` validates an Android network-security-config / TLS-pinning declaration and acts as a CI gate proving certificate pinning is configured. Console script: `pincheck`.
+
+1. **Install**:
+   ```bash
+   pipx install pincheck     # or: pip install pincheck
+   ```
+2. **Check a network-security-config XML file** and print a findings report:
+   ```bash
+   pincheck check network_security_config.xml
+   ```
+   Exit `0` = pinning OK, `1` = a finding fails the gate, `2` = usage/I/O error.
+3. **Read the result as JSON** for piping into CI tooling:
+   ```bash
+   pincheck check config.xml --format json | jq '.failed'
+   ```
+4. **Override the severity that fails the gate** (default threshold is `medium`):
+   ```bash
+   pincheck check config.xml --fail-on high
+   ```
+5. **Wire it into CI** so a missing/weak pin blocks the build (also runnable as a module):
+   ```bash
+   python -m pincheck check config.xml --fail-on medium || echo "TLS pinning misconfigured — blocking"
+   ```
+
 ## Contents
 
 - [Why pincheck?](#why) · [Features](#features) · [Quick start](#quick-start) · [Example](#example) · [Architecture](#architecture) · [AI stack](#ai-stack) · [How it compares](#how-it-compares) · [Integrations](#integrations) · [Install anywhere](#install-anywhere) · [Related](#related) · [Contributing](#contributing)
