@@ -34,3 +34,6 @@ pincheck = "pincheck.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["pincheck"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
