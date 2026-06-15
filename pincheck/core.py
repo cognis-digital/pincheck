@@ -118,10 +118,6 @@ def _attr(elem: ET.Element, name: str) -> Optional[str]:
     return None
 
 
-def _strip_ns(name: str) -> str:
-    return name.rsplit("}", 1)[-1]
-
-
 def _truthy(value: Optional[str]) -> bool:
     return (value or "").strip().lower() in {"true", "1", "yes"}
 
@@ -329,7 +325,26 @@ def analyze_text(xml_text: str, source: str = "<string>",
 
 
 def analyze_file(path: str, today: Optional[_dt.date] = None) -> Report:
-    """Analyze a network-security-config XML file on disk."""
-    with open(path, "r", encoding="utf-8") as fh:
-        text = fh.read()
+    """Analyze a network-security-config XML file on disk.
+
+    :raises FileNotFoundError: if *path* does not exist.
+    :raises OSError: for other I/O failures.
+    :raises ValueError: if the file cannot be decoded as text.
+    """
+    try:
+        with open(path, "r", encoding="utf-8") as fh:
+            text = fh.read()
+    except UnicodeDecodeError:
+        # Fall back to latin-1 (never raises on arbitrary byte sequences) so
+        # the XML parser can attempt to produce a structured PARSE_ERROR
+        # finding instead of leaking a raw Python exception to the caller.
+        try:
+            with open(path, "r", encoding="latin-1") as fh:
+                text = fh.read()
+        except OSError:
+            raise
+        except Exception as exc:
+            raise ValueError(
+                f"could not decode '{path}' as text: {exc}"
+            ) from exc
     return analyze_text(text, source=path, today=today)

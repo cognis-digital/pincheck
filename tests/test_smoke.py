@@ -131,3 +131,86 @@ def test_module_entrypoint():
     )
     assert result.returncode == 1
     assert json.loads(result.stdout)["failed"] is True
+
+
+# ---------------------------------------------------------------------------
+# Hardening tests: error paths, edge cases, and input validation
+# ---------------------------------------------------------------------------
+
+def test_cli_missing_file_exits_2(capsys):
+    """Non-existent path must print a clean error and return exit code 2."""
+    rc = main(["check", "/no/such/file/config.xml"])
+    assert rc == 2
+    err = capsys.readouterr().err
+    assert "error" in err.lower()
+    assert "/no/such/file/config.xml" in err
+
+
+def test_cli_binary_file_exits_2(tmp_path, capsys):
+    """A file that cannot be decoded as text must exit 2, not crash."""
+    bad = tmp_path / "bad.xml"
+    bad.write_bytes(b"\xff\xfe\x00" * 50)  # not valid UTF-8 or latin-1 XML
+    rc = main(["check", str(bad)])
+    # Either the encoding fallback produces a PARSE_ERROR finding (rc=1)
+    # or the CLI surfaces the ValueError as rc=2.  Either way no raw traceback.
+    assert rc in (1, 2)
+    # stdout/stderr must not contain a Python traceback
+    captured = capsys.readouterr()
+    assert "Traceback" not in captured.out
+    assert "Traceback" not in captured.err
+
+
+def test_cli_no_subcommand_exits_2(capsys):
+    """Calling the tool with no subcommand must print help and return 2."""
+    rc = main([])
+    assert rc == 2
+
+
+def test_analyze_text_empty_string():
+    """analyze_text('') must return a PARSE_ERROR finding, not raise."""
+    from pincheck.core import analyze_text
+    report = analyze_text("", today=dt.date(2026, 1, 1))
+    codes = {f.code for f in report.findings}
+    assert "PARSE_ERROR" in codes
+    assert report.failed is True
+
+
+def test_analyze_text_wrong_root():
+    """A well-formed XML with the wrong root element raises WRONG_ROOT."""
+    from pincheck.core import analyze_text
+    report = analyze_text("<manifest/>", today=dt.date(2026, 1, 1))
+    codes = {f.code for f in report.findings}
+    assert "WRONG_ROOT" in codes
+    assert report.failed is True
+
+
+def test_duplicate_strip_ns_removed():
+    """The duplicate _strip_ns definition must no longer exist in core.py."""
+    import ast
+    core_path = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "pincheck", "core.py",
+    )
+    with open(core_path) as fh:
+        tree = ast.parse(fh.read())
+    fn_defs = [
+        node.name for node in ast.walk(tree)
+        if isinstance(node, ast.FunctionDef) and node.name == "_strip_ns"
+    ]
+    assert len(fn_defs) == 1, (
+        f"Expected exactly one _strip_ns definition, found {len(fn_defs)}"
+    )
+
+
+def test_mcp_server_importable():
+    """mcp_server must import without errors (its core imports are now valid)."""
+    import importlib.util
+    core_path = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "pincheck", "mcp_server.py",
+    )
+    spec = importlib.util.spec_from_file_location("pincheck.mcp_server", core_path)
+    mod = importlib.util.module_from_spec(spec)
+    # Should not raise ImportError
+    spec.loader.exec_module(mod)
+    assert callable(mod.serve)

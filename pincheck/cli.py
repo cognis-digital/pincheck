@@ -117,6 +117,10 @@ def main(argv: Optional[List[str]] = None) -> int:
     except OSError as exc:
         print(f"{TOOL_NAME}: error: {exc}", file=sys.stderr)
         return 2
+    except ValueError as exc:
+        # Non-decodable binary file
+        print(f"{TOOL_NAME}: error: {exc}", file=sys.stderr)
+        return 2
 
     if args.format == "json":
         print(json.dumps(report.to_dict(), indent=2))
