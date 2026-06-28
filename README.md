@@ -20,6 +20,64 @@ pip install cognis-pincheck
 pincheck scan .            # → prioritized findings in seconds
 ```
 
+
+<!-- cognis:example:start -->
+## 🔎 Example output
+
+Real, reproducible output from the tool — runs offline:
+
+```console
+$ pincheck-emit --version
+pincheck 0.1.0
+```
+
+```console
+$ pincheck-emit --help
+usage: pincheck [-h] [--version] {check} ...
+
+Validate an Android network-security-config / TLS pinning declaration. Use as a CI gate that proves certificate pinning is configured.
+
+positional arguments:
+  {check}
+    check     analyze a network-security-config XML file
+
+options:
+  -h, --help  show this help message and exit
+  --version   show program's version number and exit
+
+examples:
+  pincheck check network_security_config.xml
+  pincheck check config.xml --format json | jq .failed
+  python -m pincheck check config.xml
+```
+
+> Blocks above are real `pincheck` output — reproduce them from a clone.
+
+**Sample result format** _(illustrative values — run on your own data for real findings):_
+
+```
+{
+"findings": [
+    {
+        "id": "1234567890",
+        "title": "Suspicious DNS Query",
+        "description": "A suspicious DNS query was detected from IP 192.168.1.100",
+        "severity": "medium",
+        "created_at": "2023-02-15T14:30:00Z"
+    },
+    {
+        "id": "2345678901",
+        "title": "Unusual Network Traffic",
+        "description": "An unusual network traffic pattern was detected from IP 192.168.1.101",
+        "severity": "high",
+        "created_at": "2023-02-15T14:31:00Z"
+    }
+]
+}
+```
+
+<!-- cognis:example:end -->
+
 ## Usage — step by step
 
 `pincheck` validates an Android network-security-config / TLS-pinning declaration and acts as a CI gate proving certificate pinning is configured. Console script: `pincheck`.

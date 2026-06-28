@@ -1,0 +1,18 @@
+$ pincheck-emit --help
+
+usage: pincheck [-h] [--version] {check} ...
+
+Validate an Android network-security-config / TLS pinning declaration. Use as a CI gate that proves certificate pinning is configured.
+
+positional arguments:
+  {check}
+    check     analyze a network-security-config XML file
+
+options:
+  -h, --help  show this help message and exit
+  --version   show program's version number and exit
+
+examples:
+  pincheck check network_security_config.xml
+  pincheck check config.xml --format json | jq .failed
+  python -m pincheck check config.xml
